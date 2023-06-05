@@ -155,7 +155,38 @@ def plot_surface_vars(da):
     ).opts(title=da.moor.data.item())
 
 
-def plot_ts_profiles(da):
+def plot_ts_profiles_line(da):
+    def plot(da_):
+        return (
+            da_.cf.sel(Z=slice(50))
+            .isel(init=-1)
+            .hvplot.line(by="zt_k", height=600, width=900)
+            .opts(hv.opts.Overlay(legend_position="bottom", legend_cols=2))
+        )
+
+    return (plot(da.temp) + plot(da.salinity)).cols(1)
+
+
+def offset(da, x, y, offset=0, remove_mean=False):
+    import numpy as np
+
+    assert da[y].ndim == 1
+
+    off = xr.DataArray(np.arange(da.sizes[y], dtype=np.float64), dims=y)
+    off *= offset
+
+    # remove mean and add offset
+    if remove_mean:
+        daoffset = da.groupby(y) - da.groupby(y).mean()
+    else:
+        daoffset = da
+
+    daoffset = daoffset + off
+
+    return daoffset
+
+
+def plot_ts_profiles_quadmesh(da):
     return (
         (
             plot_profile(da.temp, clim=(19, 31))
@@ -163,4 +194,44 @@ def plot_ts_profiles(da):
         )
         .opts(hv.opts.QuadMesh(invert_yaxis=True, ylim=(160, 0)))
         .cols(1)
+    )
+
+
+def offset_line_plot(da):
+    return (
+        offset(
+            da.cf.sel(Z=slice(150)).isel(init=-1),
+            offset=0.5,
+            remove_mean=False,
+            x="zt_k",
+            y="lead",
+        )
+        .rename(da.name)
+        .hvplot.line(
+            y="zt_k",
+            by="time",
+            color="b",
+            legend=False,
+            flip_yaxis=True,
+            width=400,
+            height=400,
+            xlabel="offset by 0.5",
+            title=da.moor.data.item(),
+        )
+    )
+
+
+def plot_forecast_offset_lines(moors):
+    return (
+        hv.Layout([offset_line_plot(moors.sel(moor=name)) for name in LOCS])
+        .cols(3)
+        .opts(
+            hv.opts.Layout(
+                title=(
+                    f"{moors.attrs['long_name']} | "
+                    f"initialized : "
+                    f"{moors.init[-1].dt.strftime('%Y-%m-%d').data.item()}"
+                )
+            )
+        )
     )
