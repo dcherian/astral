@@ -235,3 +235,91 @@ def plot_forecast_offset_lines(moors):
             )
         )
     )
+
+
+def plot_frame(da, decimated, cmap, cbar_location="top", pad=0.05):
+    if "Z" in da.cf:
+        da = da.cf.sel(Z=[0, 25, 50], method="nearest")
+        extra_loc = {}
+    else:
+        extra_loc = {"zt_k": 0, "method": "nearest"}
+
+    fg = da.isel(lead=0).plot(
+        x="xt_i",
+        y="yt_j",
+        col="zt_k",
+        robust=True,
+        cbar_kwargs={
+            "shrink": 0.6,
+            "aspect": 40,
+            "pad": 0.05,
+            "label": (f"{da.attrs['long_name']} [{da.attrs['units']}]"),
+        },
+        cmap=cmap,
+        aspect=1 / 1.5,
+        size=4,
+    )
+    for ax, loc in zip(fg.axs.ravel(), fg.name_dicts.ravel()):
+        vel = decimated[["u", "v"]].isel(lead=0).cf.sel(**loc, **extra_loc) / 100
+        hq = vel.cf.plot.quiver(
+            x="X",
+            y="Y",
+            u="u",
+            v="v",
+            ax=ax,
+            add_guide=False,
+            scale=5,
+        )
+        fg._mappables.append(hq)
+
+        for name, moor in LOCS.items():
+            ax.plot(
+                moor["longitude"],
+                moor["latitude"],
+                marker="o",
+                color="w",
+                markersize=10,
+            )
+            ax.plot(
+                moor["longitude"], moor["latitude"], marker="o", color="k", markersize=6
+            )
+            ax.text(moor["longitude"], moor["latitude"], name[-2:], fontsize="large")
+
+    last_axis = fg.axs.ravel()[-1]
+    time = da.isel(lead=0).time
+    time_str = (
+        f"{time.dt.strftime('%Y-%m-%d').data.item()}"
+        f"\n{time.dt.strftime('%H:%M').data.item()}"
+    )
+    fg._mappables.append(
+        last_axis.text(
+            x=0.95, y=0.85, s=time_str, transform=last_axis.transAxes, ha="right"
+        )
+    )
+
+    import dcpy
+
+    dcpy.plots.clean_axes(fg.axs)
+    fg.set_titles()
+    fg.set_xlabels("")
+    fg.set_ylabels("")
+    return fg
+
+
+def update_frame_lead(i, varname, fg, subset, decimated):
+    for handle, loc in zip(fg._mappables[:3], fg.name_dicts.ravel()):
+        handle.set_array(subset[varname].isel(lead=i, init=-1).sel(loc))
+        handle.set_animated(True)
+
+    for handle, loc in zip(fg._mappables[3:-1], fg.name_dicts.ravel()):
+        vel = decimated[["u", "v"]].isel(lead=i).sel(loc) / 100
+        handle.set_UVC(vel.u.transpose(), vel.v.transpose())
+        handle.set_animated(True)
+
+    time = subset.isel(init=-1, lead=i).time
+    time_str = (
+        f"{time.dt.strftime('%Y-%m-%d').data.item()}"
+        f"\n{time.dt.strftime('%H:%M').data.item()}"
+    )
+    fg._mappables[-1].set_text(time_str)
+    return fg._mappables
