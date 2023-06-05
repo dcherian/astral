@@ -2,8 +2,10 @@ import dcpy
 from pathlib import Path
 import pandas as pd
 import xarray as xr
+import holoviews as hv
 
-# Mooring locations from INCOIS map: https://incois.gov.in/portal/datainfo/buoys.jsp
+# Mooring locations from INCOIS map
+# https://incois.gov.in/portal/datainfo/buoys.jsp
 LOCS = {
     "AD06": {"latitude": 18.5, "longitude": 67.45},
     "AD07": {"latitude": 14.93, "longitude": 68.98},
@@ -125,6 +127,40 @@ def plot_profile(da, **kwargs):
             **kwargs,
         )
         .opts(
-            title=f"{da.moor.data} - initialized {da.init[-1].dt.strftime('%Y-%m-%d').data}"
+            title=(
+                f"{da.moor.data} - "
+                f"initialized {da.init[-1].dt.strftime('%Y-%m-%d').data}"
+            )
         )
+    )
+
+
+def plot_surface_vars(da):
+    surf = da.cf.sel(Z=0, method="nearest")
+    surf["init"] = surf.init.dt.strftime("%Y-%m-%d")
+    return (
+        (
+            surf.temp.hvplot.line(x="time", by="init", title="SST", ylim=(29.5, 31.5))
+            + surf.salinity.hvplot.line(
+                x="time",
+                by="init",
+                title="SSS",  # ylim=(34, 36.3)
+            )
+            + surf.hmxl.hvplot.line(
+                x="time", by="init", title="HMXL", flip_yaxis=True, ylim=(0, 30)
+            )
+        )
+        .opts(hv.opts.Overlay(width=800, aspect=4, legend_position="bottom_right"))
+        .cols(1)
+    ).opts(title=da.moor.data.item())
+
+
+def plot_ts_profiles(da):
+    return (
+        (
+            plot_profile(da.temp, clim=(19, 31))
+            + plot_profile(da.salinity, clim=(34, 37))
+        )
+        .opts(hv.opts.QuadMesh(invert_yaxis=True, ylim=(160, 0)))
+        .cols(1)
     )
