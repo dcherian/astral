@@ -37,7 +37,10 @@ def read_forecast_data():
     files = [
         file
         for file in sorted(folder.glob("*.nc"))
-        if "20230601.nc" not in file.name  # incomplete file
+        if (
+            "20230601.nc" not in file.name  # incomplete file
+            and "0607" not in file.name  # wrong file
+        )
     ]
 
     ds = xr.open_mfdataset(
@@ -53,7 +56,7 @@ def read_forecast_data():
     return ds
 
 
-def plot_facetgrid(da, decimated, cbar_location="top", pad=0.05):
+def plot_facetgrid(da, decimated, cbar_location="top", pad=0.05, **fg_kwargs):
     if "Z" in da.cf:
         da = da.cf.sel(Z=[0, 25, 50], method="nearest")
         kwargs = {"row": "zt_k"}
@@ -66,6 +69,7 @@ def plot_facetgrid(da, decimated, cbar_location="top", pad=0.05):
         x="xt_i",
         y="yt_j",
         **kwargs,
+        **fg_kwargs,
         col="lead",
         robust=True,
         cbar_kwargs={
@@ -94,7 +98,7 @@ def plot_facetgrid(da, decimated, cbar_location="top", pad=0.05):
                 v="v",
                 ax=ax,
                 add_guide=False,
-                scale=4,
+                scale=6,
             )
         )
         for name, moor in LOCS.items():
@@ -160,7 +164,7 @@ def plot_ts_profiles_line(da):
         return (
             da_.cf.sel(Z=slice(50))
             .isel(init=-1)
-            .hvplot.line(by="zt_k", height=600, width=900)
+            .hvplot.line(by="zt_k", height=300, width=900, title=da.moor.data.item())
             .opts(hv.opts.Overlay(legend_position="bottom", legend_cols=2))
         )
 
@@ -237,17 +241,19 @@ def plot_forecast_offset_lines(moors):
     )
 
 
-def plot_frame(da, decimated, cmap, cbar_location="top", pad=0.05):
+def plot_frame(da, decimated, cmap, cbar_location="top", pad=0.05, fig=None):
     if "Z" in da.cf:
         da = da.cf.sel(Z=[0, 25, 50], method="nearest")
         extra_loc = {}
+        col = "zt_k"
     else:
+        col = None
         extra_loc = {"zt_k": 0, "method": "nearest"}
 
     fg = da.isel(lead=0).plot(
         x="xt_i",
         y="yt_j",
-        col="zt_k",
+        col=col,
         robust=True,
         cbar_kwargs={
             "shrink": 0.6,
@@ -258,6 +264,7 @@ def plot_frame(da, decimated, cmap, cbar_location="top", pad=0.05):
         cmap=cmap,
         aspect=1 / 1.5,
         size=4,
+        fig=fig,
     )
     for ax, loc in zip(fg.axs.ravel(), fg.name_dicts.ravel()):
         vel = decimated[["u", "v"]].isel(lead=0).cf.sel(**loc, **extra_loc) / 100
@@ -268,7 +275,7 @@ def plot_frame(da, decimated, cmap, cbar_location="top", pad=0.05):
             v="v",
             ax=ax,
             add_guide=False,
-            scale=5,
+            scale=6,
         )
         fg._mappables.append(hq)
 
