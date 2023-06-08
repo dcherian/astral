@@ -39,7 +39,6 @@ def read_forecast_data():
         for file in sorted(folder.glob("*.nc"))
         if (
             "20230601.nc" not in file.name  # incomplete file
-            and "0607" not in file.name  # wrong file
         )
     ]
 
@@ -144,14 +143,14 @@ def plot_surface_vars(da):
     surf["init"] = surf.init.dt.strftime("%Y-%m-%d")
     return (
         (
-            surf.temp.hvplot.line(x="time", by="init", title="SST", ylim=(29.5, 31.5))
+            surf.temp.hvplot.line(x="time", by="init", title="SST")
             + surf.salinity.hvplot.line(
                 x="time",
                 by="init",
                 title="SSS",  # ylim=(34, 36.3)
             )
             + surf.hmxl.hvplot.line(
-                x="time", by="init", title="HMXL", flip_yaxis=True, ylim=(0, 30)
+                x="time", by="init", title="HMXL", flip_yaxis=True
             )
         )
         .opts(hv.opts.Overlay(width=800, aspect=4, legend_position="bottom_right"))

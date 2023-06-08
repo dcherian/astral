@@ -1,8 +1,4 @@
-format: jb-book
-root: intro
-
-parts:
-
-- captions: Forecast
-  chapters:
-  - file: isro-forecast-plot
+format: jb-article
+# root: intro
+sections:
+- file: isro-forecast-plot

@@ -39,7 +39,7 @@ jobs:
     # Build the book
     - name: Build the book
       run: |
-        jupyter-book build notebooks/
+        jupyter-book build notebooks/ --builder singlehtml
 
     # Push the book's HTML to github-pages
     - name: GitHub Pages action
