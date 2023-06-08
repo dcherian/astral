@@ -1,4 +1,2 @@
 format: jb-article
-root: intro
-sections:
-- file: isro-forecast-plot
+root: isro-forecast-plot
