@@ -144,6 +144,11 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="bd-toc-item navbar-nav active">
         <ul class="nav bd-sidenav">
 
+
+
+
+
+
 </ul>
 
     </div>
@@ -234,7 +239,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -245,11 +252,25 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Notebooks</h1>
+    <h1>ISRO SAC Forecast for ASTraL</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="intro.html#document-isro-forecast-plot">Animations: T, S, u, v at 1m, 25m, 50m</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="intro.html#mixed-layer-depth-ssu-ssv">mixed layer depth. SSU, SSV</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="intro.html#sst-sss-hmxl-timeseries">SST, SSS, HMXL timeseries</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="intro.html#t-s-time-series">T, S time series</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="intro.html#t-s-forecast-profiles">T, S forecast profiles</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="intro.html#development">Development</a></li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -259,33 +280,26 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="notebooks">
-<h1>Notebooks<a class="headerlink" href="#notebooks" title="Permalink to this heading">#</a></h1>
-<p>These are my research notebooks for a research project.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="isro-sac-forecast-for-astral">
+<h1>ISRO SAC Forecast for ASTraL<a class="headerlink" href="#isro-sac-forecast-for-astral" title="Permalink to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
-<span id="document-isro-forecast-plot"></span><section class="tex2jax_ignore mathjax_ignore" id="isro-sac-forecast-viz">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">ISRO SAC Forecast Viz</a><a class="headerlink" href="#isro-sac-forecast-viz" title="Permalink to this heading">#</a></h2>
-<p><strong>Contributors:</strong> Deepak Cherian(NCAR), Aneesh Subramanian (CU, Boulder), Neeraj S. (ISRO)</p>
-<nav class="contents" id="contents">
+<span id="document-isro-forecast-plot"></span><p><strong>Contributors:</strong> Deepak Cherian(NCAR), Aneesh Subramanian (CU, Boulder), Neeraj S. (ISRO)</p>
+<nav class="contents" id="contents" role="doc-toc">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#isro-sac-forecast-viz" id="id1">ISRO SAC Forecast Viz</a></p>
+<li><p><a class="reference internal" href="#animations-t-s-u-v-at-1m-25m-50m" id="id1">Animations: T, S, u, v at 1m, 25m, 50m</a></p></li>
+<li><p><a class="reference internal" href="#mixed-layer-depth-ssu-ssv" id="id2">mixed layer depth. SSU, SSV</a></p></li>
+<li><p><a class="reference internal" href="#sst-sss-hmxl-timeseries" id="id3">SST, SSS, HMXL timeseries</a></p></li>
+<li><p><a class="reference internal" href="#t-s-time-series" id="id4">T, S time series</a></p></li>
+<li><p><a class="reference internal" href="#t-s-forecast-profiles" id="id5">T, S forecast profiles</a></p>
 <ul>
-<li><p><a class="reference internal" href="#animations-t-s-u-v-at-1m-25m-50m" id="id2">Animations: T, S, u, v at 1m, 25m, 50m</a></p></li>
-<li><p><a class="reference internal" href="#mixed-layer-depth-ssu-ssv" id="id3">mixed layer depth. SSU, SSV</a></p></li>
-<li><p><a class="reference internal" href="#sst-sss-hmxl-timeseries" id="id4">SST, SSS, HMXL timeseries</a></p></li>
-<li><p><a class="reference internal" href="#t-s-time-series" id="id5">T, S time series</a></p></li>
-<li><p><a class="reference internal" href="#t-s-forecast-profiles" id="id6">T, S forecast profiles</a></p>
-<ul>
-<li><p><a class="reference internal" href="#t" id="id7">T</a></p></li>
-<li><p><a class="reference internal" href="#s" id="id8">S</a></p></li>
+<li><p><a class="reference internal" href="#t" id="id6">T</a></p></li>
+<li><p><a class="reference internal" href="#s" id="id7">S</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#development" id="id9">Development</a></p>
+<li><p><a class="reference internal" href="#development" id="id8">Development</a></p>
 <ul>
-<li><p><a class="reference internal" href="#preprocessing-function" id="id10">preprocessing function</a></p></li>
-</ul>
-</li>
+<li><p><a class="reference internal" href="#preprocessing-function" id="id9">preprocessing function</a></p></li>
 </ul>
 </li>
 </ul>
@@ -2573,11 +2587,11 @@ if (window.Jupyter !== undefined) {
 </style></div></div>
 </div>
 <section id="animations-t-s-u-v-at-1m-25m-50m">
-<h3><a class="toc-backref" href="#id2" role="doc-backlink">Animations: T, S, u, v at 1m, 25m, 50m</a><a class="headerlink" href="#animations-t-s-u-v-at-1m-25m-50m" title="Permalink to this heading">#</a></h3>
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Animations: T, S, u, v at 1m, 25m, 50m</a><a class="headerlink" href="#animations-t-s-u-v-at-1m-25m-50m" title="Permalink to this heading">#</a></h2>
 <img alt="_images/isro-TS.gif" class="align-center" src="_images/isro-TS.gif" />
 </section>
 <section id="mixed-layer-depth-ssu-ssv">
-<h3><a class="toc-backref" href="#id3" role="doc-backlink">mixed layer depth. SSU, SSV</a><a class="headerlink" href="#mixed-layer-depth-ssu-ssv" title="Permalink to this heading">#</a></h3>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">mixed layer depth. SSU, SSV</a><a class="headerlink" href="#mixed-layer-depth-ssu-ssv" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2607,7 +2621,7 @@ if (window.Jupyter !== undefined) {
 </div>
 </section>
 <section id="sst-sss-hmxl-timeseries">
-<h3><a class="toc-backref" href="#id4" role="doc-backlink">SST, SSS, HMXL timeseries</a><a class="headerlink" href="#sst-sss-hmxl-timeseries" title="Permalink to this heading">#</a></h3>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">SST, SSS, HMXL timeseries</a><a class="headerlink" href="#sst-sss-hmxl-timeseries" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2850,7 +2864,7 @@ if (window.Jupyter !== undefined) {
 </div>
 </section>
 <section id="t-s-time-series">
-<h3><a class="toc-backref" href="#id5" role="doc-backlink">T, S time series</a><a class="headerlink" href="#t-s-time-series" title="Permalink to this heading">#</a></h3>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">T, S time series</a><a class="headerlink" href="#t-s-time-series" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">astral</span><span class="o">.</span><span class="n">plot_ts_profiles_line</span><span class="p">(</span><span class="n">moors</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">moor</span><span class="o">=</span><span class="s2">&quot;AD06&quot;</span><span class="p">))</span>
@@ -3075,9 +3089,9 @@ if (window.Jupyter !== undefined) {
 </div>
 </section>
 <section id="t-s-forecast-profiles">
-<h3><a class="toc-backref" href="#id6" role="doc-backlink">T, S forecast profiles</a><a class="headerlink" href="#t-s-forecast-profiles" title="Permalink to this heading">#</a></h3>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">T, S forecast profiles</a><a class="headerlink" href="#t-s-forecast-profiles" title="Permalink to this heading">#</a></h2>
 <section id="t">
-<h4><a class="toc-backref" href="#id7" role="doc-backlink">T</a><a class="headerlink" href="#t" title="Permalink to this heading">#</a></h4>
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">T</a><a class="headerlink" href="#t" title="Permalink to this heading">#</a></h3>
 <div class="cell tag_full-width docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">astral</span><span class="o">.</span><span class="n">plot_forecast_offset_lines</span><span class="p">(</span><span class="n">moors</span><span class="o">.</span><span class="n">temp</span><span class="p">)</span>
@@ -3154,7 +3168,7 @@ if (window.Jupyter !== undefined) {
 </div>
 </section>
 <section id="s">
-<h4><a class="toc-backref" href="#id8" role="doc-backlink">S</a><a class="headerlink" href="#s" title="Permalink to this heading">#</a></h4>
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">S</a><a class="headerlink" href="#s" title="Permalink to this heading">#</a></h3>
 <div class="cell tag_full-width docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">autoreload</span>
@@ -3234,9 +3248,9 @@ if (window.Jupyter !== undefined) {
 </section>
 </section>
 <section id="development">
-<h3><a class="toc-backref" href="#id9" role="doc-backlink">Development</a><a class="headerlink" href="#development" title="Permalink to this heading">#</a></h3>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Development</a><a class="headerlink" href="#development" title="Permalink to this heading">#</a></h2>
 <section id="preprocessing-function">
-<h4><a class="toc-backref" href="#id10" role="doc-backlink">preprocessing function</a><a class="headerlink" href="#preprocessing-function" title="Permalink to this heading">#</a></h4>
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">preprocessing function</a><a class="headerlink" href="#preprocessing-function" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds0</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
@@ -4448,7 +4462,6 @@ Attributes:
 </div>
 </section>
 </section>
-</section>
 </div>
 </section>
 
@@ -4492,6 +4505,26 @@ Attributes:
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="intro.html#document-isro-forecast-plot">Animations: T, S, u, v at 1m, 25m, 50m</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="intro.html#mixed-layer-depth-ssu-ssv">mixed layer depth. SSU, SSV</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="intro.html#sst-sss-hmxl-timeseries">SST, SSS, HMXL timeseries</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="intro.html#t-s-time-series">T, S time series</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="intro.html#t-s-forecast-profiles">T, S forecast profiles</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="intro.html#development">Development</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>
