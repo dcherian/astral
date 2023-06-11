@@ -37,9 +37,7 @@ def read_forecast_data():
     files = [
         file
         for file in sorted(folder.glob("*.nc"))
-        if (
-            "20230601.nc" not in file.name  # incomplete file
-        )
+        if ("20230601.nc" not in file.name)  # incomplete file
     ]
 
     ds = xr.open_mfdataset(
@@ -149,9 +147,7 @@ def plot_surface_vars(da):
                 by="init",
                 title="SSS",  # ylim=(34, 36.3)
             )
-            + surf.hmxl.hvplot.line(
-                x="time", by="init", title="HMXL", flip_yaxis=True
-            )
+            + surf.hmxl.hvplot.line(x="time", by="init", title="HMXL", flip_yaxis=True)
         )
         .opts(hv.opts.Overlay(width=800, aspect=4, legend_position="bottom_right"))
         .cols(1)
@@ -329,3 +325,49 @@ def update_frame_lead(i, varname, fg, subset, decimated):
     )
     fg._mappables[-1].set_text(time_str)
     return fg._mappables
+
+
+def plot_survey_waypoints(locations, data, var):
+    from matplotlib.dates import ConciseDateFormatter
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    fig, axes = plt.subplot_mosaic(
+        [
+            [".", "N", "."],
+            ["W", "C", "E"],
+            [".", "S", "."],
+        ],
+        constrained_layout=True,
+    )
+    for name, loc in locations.items():
+        ax = axes[name]
+        kwargs = {}
+        if name != "E":
+            kwargs["add_colorbar"] = False
+        if var == "temp":
+            levels = np.arange(24.5, 30.6, 0.1)
+        elif var == "salinity":
+            levels = np.arange(35.8, 36.61, 0.05)
+        (
+            data[name][var]
+            .cf.sel(Z=slice(150))
+            .cf.plot.contourf(ax=ax, levels=levels, cmap=mpl.cm.Spectral_r, **kwargs)
+        )
+        (
+            data[name][var]
+            .cf.sel(Z=slice(150))
+            .cf.plot.contour(ax=ax, levels=levels, colors="k", linewidths=0.5, **kwargs)
+        )
+        ax.set_ylabel("")
+        ax.set_title(f"S1-{name}")
+        ax.xaxis.set_major_formatter(
+            ConciseDateFormatter(ax.xaxis.get_major_locator(), show_offset=False)
+        )
+        ax.set_xlabel("")
+    fig.set_size_inches(10, 6)
+
+    time = data[name].init
+    time_str = f"{time.dt.strftime('%Y-%m-%d').data.item()}"
+    fig.text(x=0.1, y=0.8, s=f"initialized {time_str}")
