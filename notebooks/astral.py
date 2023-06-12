@@ -1,5 +1,6 @@
 import dcpy
 from pathlib import Path
+import numpy as np
 import pandas as pd
 import xarray as xr
 import holoviews as hv
@@ -22,6 +23,14 @@ def preprocess(ds0):
     ds0 = ds0.rename({"Time": "lead"})
     ds0["lead"].attrs = {"standard_name": "forecast_period"}
     ds0["lead"] = ds0.lead.astype("timedelta64[h]")
+
+    if "20230611" in ds0.encoding["source"]:
+        # incomplete file
+        ds0 = ds0.isel(lead=slice(-1))
+        lead = ds0.lead.data
+        dlead = np.diff(lead[:2])
+        lead = np.append(lead, lead[-1] + dlead)
+        ds0 = ds0.reindex(lead=lead, method="ffill")
 
     ds0.coords["time"] = ds0.init + ds0.lead
     ds0.time.attrs.update({"axis": "T", "standard_name": "time"})
