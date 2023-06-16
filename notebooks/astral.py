@@ -46,7 +46,9 @@ def read_forecast_data():
     files = [
         file
         for file in sorted(folder.glob("*.nc"))
-        if ("20230601.nc" not in file.name)  # incomplete file
+        if (
+            "20230601.nc" not in file.name and "20230613.nc" not in file.name
+        )  # incomplete file
     ]
 
     ds = xr.open_mfdataset(
